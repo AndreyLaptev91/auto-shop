@@ -68,7 +68,7 @@ const catalog = [
     id: 8,
     user: "admin",
     name: "BMW",
-    description: "Пробег 0км. Новая машина",
+    description: "Пробег 0км. Новая машина, масло жрет тоннами",
     price: 7463,
     image:
       "https://chelindleasing.ru/upload/iblock/cbe/cbe53f1f46923cb39491c58296901779.jpg",

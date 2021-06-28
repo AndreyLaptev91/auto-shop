@@ -11,14 +11,7 @@ function Catalog() {
   return (
     <Container className="py-5">
       <Row>
-        <Col xs={3}>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Товары</li>
-            <li class="list-group-item">Контакты</li>
-            <li class="list-group-item">Главная</li>
-            <li class="list-group-item">Корзина</li>
-          </ul>
-        </Col>
+        <Col xs={3}></Col>
         <Col xs={9}>
           <Row>
             {catalog.map((el) => (
@@ -30,7 +23,7 @@ function Catalog() {
                     <Card.Text className="d-flex justify-content-between align-items-centr">
                       {el.description}
                     </Card.Text>
-                    <span>Цена:</span>
+                    <span>Цена: </span>
                     <span>{el.price} РУБ</span>
                   </Card.Body>
                 </Card>
