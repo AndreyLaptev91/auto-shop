@@ -14,17 +14,23 @@ function Catalog() {
         <Col xs={3}></Col>
         <Col xs={9}>
           <Row>
-            {catalog.map((el) => (
+            {catalog.map((product) => (
               <Col sm={12} md={6} lg={4} xl={4}>
                 <Card className="mb-3">
-                  <Card.Img variant="top" src={el.image} className="auto-img" />
+                  <Card.Img
+                    variant="top"
+                    src={product.image}
+                    className="auto-img"
+                  />
                   <Card.Body>
-                    <Card.Title>{el.name}</Card.Title>
+                    <Card.Title>{product.name}</Card.Title>
                     <Card.Text className="d-flex justify-content-between align-items-centr">
-                      {el.description}
+                      {product.description}
                     </Card.Text>
-                    <span>Цена: </span>
-                    <span>{el.price} РУБ</span>
+                    <button onClick={() => onAdd(product)}>
+                      <span>Цена: </span>
+                      <span>{product.price} РУБ</span>
+                    </button>
                   </Card.Body>
                 </Card>
               </Col>
