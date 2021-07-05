@@ -1,79 +1,192 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import Header from "./Header";
-import Catalog from "./Catalog";
+import Products from "./Products";
 import Contacts from "./Contacts";
 import Basket from "./Basket";
-import Main from "./Main";
 import Navbar from "./Navbar";
+import Search from "./Search";
+import Main from "./Main";
+import Filter from "./Filter";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  const [setBasket] = useState([]);
-  useEffect(() => {
-    fetch("/catalog")
-      .then((res) => res.json(x))
-      .then((data) => setBasket(data));
-  }, []);
-  const { products, onAdd, onRemove } = catalog;
-  const [cartItems, setCartItems] = useState([]);
-  const onAdd = (product) => {
-    const exist = cartItems.find((x) => x.id === product.id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((x) =>
-          x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
-        )
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      filteredProducts: [],
+      sort: "",
+      type: "",
+      inputSearch: "",
+      cartItems: [],
+      showCart: false,
+    };
+  }
+
+  componentDidMount() {
+    fetch("/products")
+      .then((res) => res.json())
+      .then((data) =>
+        this.setState({
+          products: data,
+          filteredProducts: data,
+        })
       );
-    } else {
-      setCartItems([...cartItems, { ...product, qty: 1 }]);
+
+    if (localStorage.getItem("cartItems")) {
+      this.setState({
+        cartItems: JSON.parse(localStorage.getItem("cartItems")),
+      });
     }
+  }
+
+  handleChangeSort = (e) => {
+    this.setState({ sort: e.target.value });
+    this.listProducts();
   };
-  const onRemove = (product) => {
-    const exist = cartItems.find((x) => x.id === product.id);
-    if (exist.qty === 1) {
-      setCartItems(cartItems.filter((x) => x.id !== product.id));
-    } else {
-      setCartItems(
-        cartItems.map((x) =>
-          x.id === product.id ? { ...exist, qty: exist.qty - 1 } : x
-        )
-      );
-    }
+
+  handleChangeType = (e) => {
+    this.setState({ type: e.target.value });
+    this.listProducts();
   };
-  return (
-    <BrowserRouter>
-      <div className="App">
-        <Header />
-        <Container className="py-3 d-flex">
-          <Row>
-            <Col xs={3} className="d-flex">
-              <Navbar />
-            </Col>
-            <Col xs={9} className="d-flex">
-              <Route
-                onAdd={onAdd}
-                products={products}
-                path="/Catalog"
-                component={Catalog}
-              />
-              <Route path="/Contacts" component={Contacts} />
-              <Route
-                countCartItems={cartItems.length}
-                cartItems={cartItems}
-                onAdd={onAdd}
-                onRemove={onRemove}
-                path="/Basket"
-                component={Basket}
-              />
-              <Route path="/Main" component={Main} />
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </BrowserRouter>
-  );
+
+  handleOnInputChange = (e) => {
+    this.setState({ inputSearch: e.target.value });
+    this.listProducts();
+  };
+
+  handleShowCart = (e) => {
+    this.setState({ showCart: !this.state.showCart });
+  };
+
+  handleAddToCart = (e, product) => {
+    this.setState((state) => {
+      const cartItems = state.cartItems;
+      let productAlreadyInCart = false;
+
+      cartItems.forEach((item) => {
+        if (item.id === product.id) {
+          productAlreadyInCart = true;
+          item.count++;
+        }
+      });
+      if (!productAlreadyInCart) {
+        cartItems.push({ ...product, count: 1 });
+      }
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+      return cartItems;
+    });
+  };
+
+  handleRemoveFromCart = (e, item) => {
+    this.setState((state) => {
+      const cartItems = state.cartItems.filter((a) => a.id !== item.id);
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      return { cartItems };
+    });
+  };
+
+  listProducts = () => {
+    this.setState((state) => {
+      if (state.sort !== "") {
+        state.products.sort((a, b) =>
+          state.sort === "lowest"
+            ? a.price > b.price
+              ? 1
+              : -1
+            : a.price < b.price
+            ? 1
+            : -1
+        );
+      } else {
+        state.products.sort((a, b) => (a.id > b.id ? 1 : -1));
+      }
+
+      if (state.type !== "" && state.inputSearch !== "") {
+        return {
+          filteredProducts: state.products.filter(
+            (a) =>
+              a.type.indexOf(state.type) >= 0 &&
+              a.name.toLowerCase().indexOf(state.inputSearch) >= 0
+          ),
+        };
+      } else if (state.type !== "") {
+        return {
+          filteredProducts: state.products.filter(
+            (a) => a.type.indexOf(state.type) >= 0
+          ),
+        };
+      } else if (state.inputSearch !== "") {
+        return {
+          filteredProducts: state.products.filter(
+            (a) => a.name.toLowerCase().indexOf(state.inputSearch) >= 0
+          ),
+        };
+      }
+
+      return { filteredProducts: state.products };
+    });
+  };
+
+  render() {
+    return (
+      <BrowserRouter>
+        <div className="App">
+          <Header />
+          <Container className="py-3 d-flex">
+            <Row>
+              <Col xs={3} className="d-flex">
+                <Navbar
+                  showCart={this.state.showCart}
+                  handleShowCart={this.handleShowCart}
+                  cartItems={this.state.cartItems}
+                  handleRemoveFromCart={this.handleRemoveFromCart}
+                />
+              </Col>
+              <Col xs={9} className="d-flex">
+                <Route path="/Main" component={Main} />
+
+                <Route path="/Contacts" component={Contacts} />
+                <Route
+                  path="/Products"
+                  component={Products}
+                  products={this.state.filteredProducts}
+                  handleAddToCart={this.handleAddToCart}
+                />
+                <Route
+                  path="/Basket"
+                  component={Basket}
+                  showCart={this.state.showCart}
+                  handleShowCart={this.handleShowCart}
+                  cartItems={this.state.cartItems}
+                  handleRemoveFromCart={this.handleRemoveFromCart}
+                />
+                <Route
+                  path="/Search"
+                  component={Search}
+                  inputSearch={this.state.inputSearch}
+                  handleOnInputChange={this.handleOnInputChange}
+                />
+                <Route
+                  path="/Filter"
+                  component={Filter}
+                  type={this.state.type}
+                  sort={this.state.sort}
+                  handleChangeType={this.handleChangeType}
+                  handleChangeSort={this.handleChangeSort}
+                  count={this.state.filteredProducts.length}
+                />
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;

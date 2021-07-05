@@ -1,18 +1,18 @@
 const express = require("express");
-const catalog = require("./catalog.js");
+const products = require("./products.js");
 const cors = require("cors");
 
 const server = express();
 server.use(cors());
 
-server.get("/catalog", (req, res) => {
-  res.json(catalog);
+server.get("/products", (req, res) => {
+  res.json(products);
 });
 
-server.get("/catalog/:id", (req, res) => {
+server.get("/products/:id", (req, res) => {
   const { id } = req.params;
-  const product = catalog.find((el) => el.id === +id);
-  res.json(product);
+  const products = products.find((el) => el.id === +id);
+  res.json(products);
 });
 
 server.listen(8000, () => {

@@ -1,61 +1,59 @@
-import React from "react";
+import React, { Component } from "react";
+import Util from "./Util";
+import PropTypes from "prop-types";
 
-function Basket(props) {
-  const { cartItems, onAdd, onRemove } = props;
-  const itemsPrise= cartItems.reduce((a,c) => a+c.price * c.qty 0);
-  const taxPrice = itemsPrice * 0.16;
-  const shippingPrice = itemsPrice > 2000 ? 0 : 50;
-  const totalPrice = itemsPrice + taxPrice + shippingPrice;
-
-  return (
-    <aside className="block col-1">
-      <h2>Cart Items</h2>
-      <div>{cartItems.length === 0 && <div>Cart Is Items</div>}</div>
-      {cartItems.map((item) => (
-        <div key={item.id} className="row">
-          <div className="col-2">{item.name}</div>
-          <div className="block col-2">
-            <button onClick={() => onAdd(item)} className="add">
-              +
-            </button>
-            <button onClick={() => onRemove(item)} className="remove">
-              +
-            </button>
+export class Basket extends Component {
+  render() {
+    const { cartItems } = this.props;
+    return (
+      <div className="alert alert-info">
+        {cartItems.length === 0 ? (
+          "Ваша корзина пуста"
+        ) : (
+          <div> У Вас {cartItems.length} техники в корзине </div>
+        )}
+        {cartItems.length > 0 && (
+          <div>
+            <ul className="cart-items">
+              {cartItems.map((item) => (
+                <li className="m-3 cart-list" key={item.id}>
+                  <img src={item.img} alt={item.name} />
+                  <b> - {item.name} </b>x {item.count} ={" "}
+                  {item.price * item.count}
+                  <button
+                    type="button"
+                    className="btn btn-danger ml-3"
+                    onClick={(e) => this.props.handleRemoveFromCart(e, item)}
+                  >
+                    X
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <b>
+              Общая сумма:{" "}
+              {Util.formatCurrency(
+                cartItems.reduce((a, c) => a + c.price * c.count, 0)
+              )}
+              <button
+                className="btn btn-primary m-3"
+                onClick={() =>
+                  alert("Заказ отправлен на обработку ждите связи с оператором")
+                }
+              >
+                Заказать
+              </button>
+            </b>
           </div>
-          <div className="col-2 text-right">
-            {item.qty} x ${item.price.toFixed(2)}
-          </div>
-        </div>
-      ))}
-      {cartItems.length !== 0 && (
-        <>
-        <hr></hr>
-        <div className="row">
-          <div className="col-2"><strong>Сумма</strong></div>
-          <div className="col-1 text-right">${itemsPrice}</div>
-        </div>
-        <div className="row">
-          <div className="col-2"><strong>Налог</strong></div>
-          <div className="col-1 text-right">${taxPrice}</div>
-        </div>
-        <div className="row">
-          <div className="col-2"><strong>Доставка автовозом</strong></div>
-          <div className="col-1 text-right">${shippingPrice}</div>
-        </div>
-        <div className="row">
-          <div className="col-2"><strong>Общая сумма</strong></div>
-          <div className="col-1 text-right">${totalPrice}</div>
-          <hr/>
-          <div className="row">
-            <button onClick={() => alert("Заказ оформлен! ждите звонка оператора!")}>
-              Checkout
-            </button>
-          </div>
-        </div>
-        </>
-      )}
-    </aside>
-  );
+        )}
+      </div>
+    );
+  }
 }
+
+Basket.propTypes = {
+  cartItems: PropTypes.array.isRequired,
+  handleRemoveFromCart: PropTypes.func.isRequired,
+};
 
 export default Basket;
