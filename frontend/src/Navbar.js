@@ -40,13 +40,12 @@ export class NavBar extends Component {
             />
           </div>
         ) : null}
-
-        <a className="list-group-item">
-          <Search />
-        </a>
-        <a className="list-group-item">
+        <p>
+          <Search className="d-flex align-items-right" />
+        </p>
+        <p>
           <Filter />
-        </a>
+        </p>
       </ul>
     );
   }
