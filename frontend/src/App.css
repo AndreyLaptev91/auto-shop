@@ -5,6 +5,77 @@ a {
   color: inherit;
 }
 .auto-img {
-  height: 300px;
+  height: 150px;
   object-fit: cover;
+}
+
+.product-view {
+  width: 100%;
+  float: right;
+}
+
+.btn-default {
+  outline: 1px solid black;
+}
+
+.search {
+  position: relative;
+}
+.search input {
+  text-indent: 30px;
+}
+.search .fa-search {
+  position: absolute;
+  top: 11px;
+  left: 15px;
+  font-size: 15px;
+}
+
+.cart-items {
+  padding: 0;
+  margin: 0;
+}
+
+.cart-list {
+  list-style: none;
+}
+
+.cart-list img {
+  width: 25vh;
+  height: 15vh;
+}
+
+.cart-container {
+  width: 30vw;
+}
+
+label {
+  display: contents;
+}
+
+.btn-danger {
+  float: right;
+}
+
+.dialog-close-button {
+  margin-bottom: 15px;
+  padding: 3px 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  align-self: flex-end;
+}
+
+/* Media Queries for mobile view*/
+@media (max-width: 900px) {
+  .pl-5 {
+    padding: 0 !important;
+    text-align: center;
+  }
+  h1 {
+    text-align: center;
+  }
 }

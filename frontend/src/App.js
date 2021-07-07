@@ -153,32 +153,48 @@ class App extends Component {
                 <Route path="/Contacts" component={Contacts} />
                 <Route
                   path="/Products"
-                  component={Products}
-                  products={this.state.filteredProducts}
-                  handleAddToCart={this.handleAddToCart}
+                  render={(props) => (
+                    <Products
+                      {...props}
+                      products={this.state.filteredProducts}
+                      handleAddToCart={this.handleAddToCart}
+                    />
+                  )}
                 />
                 <Route
                   path="/Basket"
-                  component={Basket}
-                  showCart={this.state.showCart}
-                  handleShowCart={this.handleShowCart}
-                  cartItems={this.state.cartItems}
-                  handleRemoveFromCart={this.handleRemoveFromCart}
+                  render={(props) => (
+                    <Basket
+                      {...props}
+                      showCart={this.state.showCart}
+                      handleShowCart={this.handleShowCart}
+                      cartItems={this.state.cartItems}
+                      handleRemoveFromCart={this.handleRemoveFromCart}
+                    />
+                  )}
                 />
                 <Route
                   path="/Search"
-                  component={Search}
-                  inputSearch={this.state.inputSearch}
-                  handleOnInputChange={this.handleOnInputChange}
+                  render={(props) => (
+                    <Search
+                      {...props}
+                      inputSearch={this.state.inputSearch}
+                      handleOnInputChange={this.handleOnInputChange}
+                    />
+                  )}
                 />
                 <Route
                   path="/Filter"
-                  component={Filter}
-                  type={this.state.type}
-                  sort={this.state.sort}
-                  handleChangeType={this.handleChangeType}
-                  handleChangeSort={this.handleChangeSort}
-                  count={this.state.filteredProducts.length}
+                  render={(props) => (
+                    <Filter
+                      {...props}
+                      type={this.state.type}
+                      sort={this.state.sort}
+                      handleChangeType={this.handleChangeType}
+                      handleChangeSort={this.handleChangeSort}
+                      count={this.state.filteredProducts.length}
+                    />
+                  )}
                 />
               </Col>
             </Row>

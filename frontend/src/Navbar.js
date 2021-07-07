@@ -11,7 +11,7 @@ export class NavBar extends Component {
         <a href="/Main" className="list-group-item">
           Главная
         </a>
-        <a href="/Catalog" className="list-group-item">
+        <a href="/Products" className="list-group-item">
           Автомобили
         </a>
         <a href="/Contacts" className="list-group-item">
@@ -35,17 +35,25 @@ export class NavBar extends Component {
             </button>
             <Basket
               showCart={this.props.showCart}
-              cartItems={this.props.cartItems}
               handleRemoveFromCart={this.props.handleRemoveFromCart}
             />
           </div>
         ) : null}
-        <p>
-          <Search className="d-flex align-items-right" />
-        </p>
-        <p>
-          <Filter />
-        </p>
+
+        <i>
+          <Search
+            className="d-flex align-items-right"
+            inputSearch=""
+            handleOnInputChange={() => {}}
+          />
+        </i>
+        <i>
+          <Filter
+            className="d-flex align-items-right"
+            inputSearch=""
+            filteredProducts={() => {}}
+          />
+        </i>
       </ul>
     );
   }
@@ -56,6 +64,12 @@ NavBar.propTypes = {
   cartItems: PropTypes.array.isRequired,
   handleShowCart: PropTypes.func.isRequired,
   handleRemoveFromCart: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  sort: PropTypes.string.isRequired,
+  handleChangeSort: PropTypes.func.isRequired,
+  handleChangeType: PropTypes.func.isRequired,
+  inputSearch: PropTypes.string.isRequired,
+  handleOnInputChange: PropTypes.func.isRequired,
 };
 
 export default NavBar;
