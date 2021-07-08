@@ -8,7 +8,10 @@ export class Products extends Component {
       <div className="col-md-4 pb-5" key={product.id}>
         <div className="thumbnail text-center">
           <a href={"javscript:;"}>
-            <img className="auto-img" src={product.image} alt={product.name} />
+            <img
+              src={`/product item/${product.unique}.jpg`}
+              alt={product.name}
+            />
             <p>{product.name}</p>
           </a>
           <div className="pb-3">

@@ -6,22 +6,22 @@ export class Basket extends Component {
   render() {
     const { cartItems } = this.props;
     return (
-      <div className="alert alert-info">
+      <div className="alert">
         {cartItems.length === 0 ? (
           "Ваша корзина пуста"
         ) : (
-          <div >
-            {" "}
-            У Вас {cartItems.length} техники в корзине{" "}
-          </div>
+          <div> У Вас {cartItems.length} техники в корзине </div>
         )}
         {cartItems.length > 0 && (
           <div>
             <ul className="cart-items">
               {cartItems.map((item) => (
                 <li className="m-3 cart-list" key={item.id}>
-                  <img src={item.image} alt={item.name} />
-                  <b> - {item.name} </b>x {item.count} ={" "}
+                  <img
+                    src={`/product item/${item.unique}.jpg`}
+                    alt={item.name}
+                  />
+                  <b> - {item.name} </b>x {item.count} =
                   {item.price * item.count}
                   <button
                     type="button"
@@ -39,9 +39,11 @@ export class Basket extends Component {
                 cartItems.reduce((a, c) => a + c.price * c.count, 0)
               )}
               <button
-                className="btn btn-primary m-3"
+                className="btn btn-dark m-7"
                 onClick={() =>
-                  alert("Заказ отправлен на обработку ждите связи с оператором")
+                  alert(
+                    "Заказ отправлен на обработку, ждите связи с оператором"
+                  )
                 }
               >
                 Заказать
@@ -60,6 +62,3 @@ Basket.propTypes = {
 };
 
 export default Basket;
-
-
-
