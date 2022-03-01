@@ -12,7 +12,7 @@ export class NavBar extends Component {
           Главная
         </a>
         <a href="/Products" className="list-group-item">
-          Автомобили
+          Техника
         </a>
         <a href="/Contacts" className="list-group-item">
           Контакты

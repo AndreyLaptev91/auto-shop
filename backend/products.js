@@ -14,6 +14,7 @@ const products = [
     name: "Ford Mustang",
     description: "Пробег 3000км. не битая, косяков нет.",
     price: 78922.26,
+    type: "auto",
     unique: 7,
   },
   {
